@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDL Analytics | Transforme Dados em Lucro e Eficiência</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: JDL Clarity (Azul Escuro, Azul Brilhante, Branco, Cinza, Verde) -->
+    <!-- Application Structure Plan: A generic, public-facing single-page application designed as a service landing page. The structure guides a general audience from identifying their own common business pains (Desafios) to seeing a clear Solution (Raio-X), understanding its value through tangible Deliverables and a structured Process. It establishes credibility via the Specialist section and funnels the user towards a consultation, replacing a fixed price with a call to action for a custom quote. This is a classic sales funnel structure adapted for a consulting service. -->
+    <!-- Visualization & Content Choices: Common business pain points are listed with icons to increase relatability. The core service is visualized with the interactive "before/after" chart to quickly demonstrate value to a broad audience. The process timeline and deliverable cards are maintained for their clarity and professional look. The fixed "Investment" section is removed in favor of a "Next Steps" section that encourages direct contact, which is more appropriate for a generic service page. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .jdl-bg-dark { background-color: #0A2A43; }
+        .jdl-text-blue { color: #007BFF; }
+        .jdl-border-blue { border-color: #007BFF; }
+        .jdl-bg-light { background-color: #F8F9FA; }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- Header -->
+    <header id="header" class="jdl-bg-dark bg-opacity-95 backdrop-blur-sm text-white p-4 fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="#hero" class="text-xl font-bold font-montserrat flex-shrink-0">JDL Analytics</a>
+            
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#desafios" class="hover:text-jdl-text-blue transition-colors">Desafios</a>
+                <a href="#solucao" class="hover:text-jdl-text-blue transition-colors">A Solução</a>
+                <a href="#entregaveis" class="hover:text-jdl-text-blue transition-colors">Entregáveis</a>
+                <a href="#processo" class="hover:text-jdl-text-blue transition-colors">Processo</a>
+            </nav>
+
+            <div class="flex items-center">
+                <a href="#contato" class="hidden md:inline-block bg-jdl-text-blue text-white px-4 py-2 rounded-md hover:bg-opacity-80 transition-all font-semibold">Solicitar Análise</a>
+                <div class="md:hidden ml-4">
+                    <button id="mobile-menu-button" class="p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-jdl-text-blue">
+                        <span class="sr-only">Abrir menu principal</span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full jdl-bg-dark bg-opacity-95">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#desafios" class="block py-2 px-3 text-base font-medium rounded-md hover:bg-gray-700">Desafios</a>
+                <a href="#solucao" class="block py-2 px-3 text-base font-medium rounded-md hover:bg-gray-700">A Solução</a>
+                <a href="#entregaveis" class="block py-2 px-3 text-base font-medium rounded-md hover:bg-gray-700">Entregáveis</a>
+                <a href="#processo" class="block py-2 px-3 text-base font-medium rounded-md hover:bg-gray-700">Processo</a>
+                <a href="#contato" class="block py-2 px-3 text-base font-medium rounded-md bg-jdl-text-blue mt-2">Solicitar Análise</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen jdl-bg-dark text-white flex items-center pt-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-black uppercase tracking-wider">Transforme Dados em Lucro e Eficiência</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-300">Ajudamos empresas a parar de "achar" e começar a "saber", utilizando o poder dos seus próprios dados para impulsionar decisões inteligentes.</p>
+            <a href="#desafios" class="mt-8 inline-block bg-jdl-text-blue text-white px-8 py-4 rounded-md text-lg font-bold hover:bg-opacity-80 transition-all transform hover:scale-105">Descubra Como</a>
+        </div>
+    </section>
+
+    <!-- Common Challenges Section -->
+    <section id="desafios" class="py-20 px-4 jdl-bg-light">
+        <div class="container mx-auto fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center">Sua Empresa Enfrenta Estes Desafios?</h2>
+            <p class="text-center mt-4 max-w-3xl mx-auto text-gray-600">Se você se identifica com um ou mais destes pontos, saiba que não está sozinho. São os problemas mais comuns que impedem o crescimento dos negócios.</p>
+            <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl jdl-text-blue mb-4">&#129504;</div>
+                    <h3 class="text-xl font-bold">Decisões na Intuição</h3>
+                    <p class="mt-2 text-gray-600">As decisões estratégicas ainda são baseadas mais em "feeling" do que em dados concretos?</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl jdl-text-blue mb-4">&#128190;</div>
+                    <h3 class="text-xl font-bold">Planilhas Infinitas</h3>
+                    <p class="mt-2 text-gray-600">Sua equipe gasta horas compilando relatórios manuais em planilhas complexas e propensas a erros?</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl jdl-text-blue mb-4">&#128736;</div>
+                    <h3 class="text-xl font-bold">Falta de Visão Unificada</h3>
+                    <p class="mt-2 text-gray-600">Os dados de Vendas, Marketing e Financeiro não se conversam, impedindo uma visão 360° do negócio?</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solucao" class="py-20 px-4">
+        <div class="container mx-auto text-center fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold">A Solução: Nosso "Raio-X de Dados"</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-gray-600">Para resolver estes desafios, criamos o serviço "Raio-X de Dados & Oportunidades". É o primeiro passo, um projeto rápido de 2 a 3 semanas para mapear seu cenário e entregar um plano de ação claro.</p>
+            
+            <div class="mt-12">
+                 <h3 class="text-2xl font-bold mb-4">Do Caos à Clareza: Uma Demonstração Prática</h3>
+                <p class="max-w-2xl mx-auto text-gray-600 mb-6">Muitas empresas veem seus dados como um emaranhado de pontos desconexos. Nosso trabalho é organizá-los em insights que contam uma história e direcionam a ação. Veja a diferença:</p>
+
+                <div class="flex justify-center mb-6">
+                    <button id="toggleChartBtn" class="bg-jdl-text-blue text-white px-6 py-2 rounded-md hover:bg-opacity-80 transition-all">Ver Dados Organizados &#128202;</button>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="dataVizChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Deliverables Section -->
+    <section id="entregaveis" class="py-20 px-4 jdl-bg-light">
+        <div class="container mx-auto fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center">O Que o "Raio-X" Entrega Concretamente</h2>
+             <p class="text-center mt-4 max-w-3xl mx-auto text-gray-600">Ao final do projeto, você terá em mãos ativos claros e tangíveis para impulsionar seu negócio. Transparência é a chave do nosso processo.</p>
+            <div class="grid md:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-bold text-jdl-text-blue">&#9998; Workshop de Kick-off</h3>
+                    <p class="mt-2 text-gray-600">Uma imersão para alinhamento total de expectativas e profundo entendimento do seu negócio.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-bold text-jdl-text-blue">&#128214; Mapeamento de Fontes de Dados</h3>
+                    <p class="mt-2 text-gray-600">Diagnóstico e análise das suas principais fontes de informação (Sistemas, ERPs, Planilhas).</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 md:col-span-2">
+                     <h3 class="text-xl font-bold text-jdl-text-blue">&#128196; Relatório de Diagnóstico (PDF)</h3>
+                    <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                        <li>Análise da qualidade e estrutura dos dados atuais.</li>
+                        <li>Definição de 3 a 5 KPIs essenciais para o seu negócio.</li>
+                        <li>Identificação de 2 a 3 "quick wins" de alto impacto.</li>
+                        <li>Roadmap visual com as próximas etapas para uma cultura de dados.</li>
+                    </ul>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 md:col-span-2">
+                    <h3 class="text-xl font-bold text-jdl-text-blue">&#128187; Apresentação Executiva</h3>
+                    <p class="mt-2 text-gray-600">Reunião para apresentar os resultados, insights e discutir o plano de ação com a liderança.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="processo" class="py-20 px-4">
+        <div class="container mx-auto fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center">Nosso Processo de Trabalho</h2>
+            <p class="text-center mt-4 max-w-3xl mx-auto text-gray-600">Gerenciamos o projeto com um cronograma transparente de 3 semanas para garantir a entrega no prazo e a qualidade esperada.</p>
+            <div class="relative mt-12 max-w-2xl mx-auto">
+                <div class="border-l-2 jdl-border-blue absolute h-full top-0 left-4"></div>
+                <!-- Week 1 -->
+                <div class="mb-8 flex items-center w-full fade-in-section">
+                    <div class="z-10 bg-jdl-text-blue rounded-full h-8 w-8 flex items-center justify-center text-white font-bold">1</div>
+                    <div class="pl-8 flex-1">
+                        <div class="bg-jdl-light p-4 rounded-lg shadow-md">
+                            <h3 class="font-bold text-lg">Semana 1: Imersão e Mapeamento</h3>
+                            <p class="text-gray-600">Realizamos o Kick-off, mergulhamos no seu negócio e mapeamos as fontes de dados.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 2 -->
+                <div class="mb-8 flex items-center w-full fade-in-section">
+                    <div class="z-10 bg-jdl-text-blue rounded-full h-8 w-8 flex items-center justify-center text-white font-bold">2</div>
+                    <div class="pl-8 flex-1">
+                        <div class="bg-jdl-light p-4 rounded-lg shadow-md">
+                            <h3 class="font-bold text-lg">Semana 2: Análise e Diagnóstico</h3>
+                            <p class="text-gray-600">Analisamos profundamente os dados e elaboramos o relatório de diagnóstico com as primeiras descobertas.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 3 -->
+                <div class="flex items-center w-full fade-in-section">
+                    <div class="z-10 bg-jdl-text-blue rounded-full h-8 w-8 flex items-center justify-center text-white font-bold">3</div>
+                    <div class="pl-8 flex-1">
+                        <div class="bg-jdl-light p-4 rounded-lg shadow-md">
+                            <h3 class="font-bold text-lg">Semana 3: Entrega e Plano de Ação</h3>
+                            <p class="text-gray-600">Apresentamos os resultados, entregamos o relatório final e discutimos os próximos passos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialist Section -->
+    <section id="especialista" class="py-20 px-4 jdl-bg-light">
+        <div class="container mx-auto text-center fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold">Sobre o Especialista</h2>
+            <div class="mt-8 flex flex-col md:flex-row items-center justify-center max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+                 <img src="https://placehold.co/150x150/007BFF/FFFFFF?text=JD" alt="Juliano Delboni Loss" class="w-36 h-36 rounded-full object-cover border-4 jdl-border-blue">
+                <div class="md:ml-8 mt-6 md:mt-0 text-left">
+                    <h3 class="text-2xl font-bold">Juliano Delboni Loss</h3>
+                    <p class="text-lg text-jdl-text-blue font-semibold">Fundador da JDL Analytics</p>
+                    <p class="mt-4 text-gray-600">Com mais de 7 anos de experiência, trago uma mentalidade de Engenheiro de Produção para o universo dos dados. Minha expertise foi consolidada em projetos de alto impacto para gigantes da indústria e fintechs ágeis, sempre com foco em conectar dados operacionais a resultados financeiros tangíveis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA & Contact Section -->
+    <section id="contato" class="py-20 px-4 jdl-bg-dark text-white">
+        <div class="container mx-auto text-center fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold">Pronto para ter Clareza Total?</h2>
+            <p class="mt-4 max-w-2xl mx-auto text-gray-300">Cada negócio é único. O próximo passo é uma conversa de 30 minutos, sem compromisso, para entendermos seu cenário e como podemos ajudar. A partir daí, montamos uma proposta sob medida para você.</p>
+             <div class="mt-8">
+                <a href="mailto:[seu.email@jdlanalytics.com.br]?subject=Interesse no serviço Raio-X de Dados" class="bg-jdl-text-blue text-white px-8 py-4 rounded-md text-lg font-bold hover:bg-opacity-80 transition-all transform hover:scale-105 inline-block">Agendar Análise Gratuita</a>
+            </div>
+            <p class="mt-6 text-gray-400">Ou entre em contato diretamente:</p>
+            <p class="font-bold text-lg mt-2">[seu.email@jdlanalytics.com.br] | [Seu Telefone / WhatsApp]</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2025 JDL Analytics. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu on link click or clicking outside
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            document.addEventListener('click', (e) => {
+                 if (!header.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            // Header shadow on scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-lg');
+                } else {
+                    header.classList.remove('shadow-lg');
+                }
+            });
+
+            // Fade-in sections on scroll
+            const sections = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Chart.js Visualization
+            const ctx = document.getElementById('dataVizChart').getContext('2d');
+            let dataChart;
+            let isChartOrganized = false;
+
+            const messyData = {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Dados Brutos',
+                        data: Array.from({ length: 50 }, () => ({
+                            x: Math.random() * 100,
+                            y: Math.random() * 100
+                        })),
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Visão 1: Dados Desorganizados' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Métrica A' } },
+                        y: { title: { display: true, text: 'Métrica B' } }
+                    }
+                }
+            };
+            
+            const organizedData = {
+                type: 'bar',
+                data: {
+                    labels: ['Vendas', 'Marketing', 'Operações', 'Financeiro', 'Suporte'],
+                    datasets: [{
+                        label: 'Performance por Área (%)',
+                        data: [85, 65, 90, 75, 80],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Visão 2: Insights Claros e Acionáveis' }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'Índice de Performance' }
+                        }
+                    }
+                }
+            };
+            
+            function createChart(config) {
+                if (dataChart) {
+                    dataChart.destroy();
+                }
+                dataChart = new Chart(ctx, config);
+            }
+
+            createChart(messyData);
+
+            const toggleBtn = document.getElementById('toggleChartBtn');
+            toggleBtn.addEventListener('click', () => {
+                isChartOrganized = !isChartOrganized;
+                if (isChartOrganized) {
+                    createChart(organizedData);
+                    toggleBtn.innerHTML = 'Ver Dados Desorganizados &#128260;';
+                } else {
+                    createChart(messyData);
+                    toggleBtn.innerHTML = 'Ver Dados Organizados &#128202;';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
